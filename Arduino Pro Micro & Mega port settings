@@ -1,0 +1,92 @@
+Arduino Pro Micro
+
+https://wiki.eprolabs.com/index.php?title=Arduino_Pro_Micro
+
+He modificado en Controler.cpp
+
+pinMode(15, OUTPUT); //antiguo pin2
+pinMode(16, OUTPUT); //antiguo pin3
+pinMode(14, OUTPUT); //antiguo pin4
+if (numPins > 8) pinMode(8, OUTPUT); //antiguo pin5
+
+y mas abajo...
+
+void Button::muxUpdate()
+{
+byte temp = _muxpin;
+temp = temp << 1; //antiguo 2
+if (_numMuxPins > 8) PORTB = PORTB & B11100001; //antiguo PORTD & B11000011
+else PORTB = PORTB & B11110001; //antiguo PORTD & B11100011
+PORTB = PORTB | temp;
+}
+
+Y...
+
+void Pot::muxUpdate()
+{
+byte temp = _muxpin;
+temp = temp << 1;
+if (_numMuxPins > 8) PORTB = PORTB & B11100001;
+else PORTB = PORTB & B11110001;
+//PORTB = PORTB & B11000011;
+PORTB = PORTB | temp;
+}
+
+Parece que funciona.
+Probaré para Mega 2560.
+gzk187@hotmail.com
+
+
+Anonymous18 December 2019 at 11:12
+Hola...
+
+Para Arduino MEGA2560....
+
+pinMode(24, OUTPUT);
+pinMode(25, OUTPUT);
+pinMode(26, OUTPUT);
+if (numPins > 8) pinMode(27, OUTPUT);
+
+mas abajo...
+
+void Button::muxUpdate()
+{
+byte temp = _muxpin;
+temp = temp << 2;
+if (_numMuxPins > 8) PORTA = PORTA & B11000011;
+else PORTA = PORTA & B11100011;
+PORTA = PORTA | temp;
+}
+
+Y...
+
+void Pot::muxUpdate()
+{
+byte temp = _muxpin;
+temp = temp << 2;
+if (_numMuxPins > 8) PORTA = PORTA & B11000011;
+else PORTA = PORTA & B11100011;
+//PORTA = PORTA & B11000011;
+PORTA = PORTA | temp;
+}
+
+Tambien parece funcionar.
+gzk187@hotmail.com
+
+
+Anonymous18 December 2019 at 11:30
+He usado los arduinos con 2 multiplexores analogicos 74hc4067 conectando los pines S0, S1, S2, S3 en los pines modificados anteriormente en su mismo orden
+
+micro:
+S0 ---- pin2 ------> pin15
+S1 ---- pin3 ------> pin16
+S2 ---- pin4 ------> pin14
+S3 ---- pin5 ------> pin8
+
+mega2560:
+S0 ---- pin2 ------> pin24
+S1 ---- pin3 ------> pin26
+S2 ---- pin4 ------> pin27
+S3 ---- pin5 ------> pin28
+
+gzk187@hotmail.com
